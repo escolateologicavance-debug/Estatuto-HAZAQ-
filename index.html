@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estatuto HAZAQ</title>
+    <link rel="manifest" href="manifest.json">
+    <style>
+        body { font-family: sans-serif; background: #f4f4f9; text-align: center; padding: 20px; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 15px; shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        img { width: 150px; height: 150px; border-radius: 10px; }
+        h1 { color: #333; margin-top: 20px; }
+        .menu-btn { 
+            display: block; width: 100%; padding: 15px; margin-top: 25px;
+            background-color: #007bff; color: white; text-decoration: none;
+            border-radius: 8px; font-weight: bold; font-size: 1.2rem;
+        }
+        .menu-btn:active { background-color: #0056b3; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="logo-512.png" alt="Logo HAZAQ">
+        <h1>Estatuto HAZAQ</h1>
+        <p>Regulamento Interno e Diretrizes</p>
+        
+        <a href="1.html" class="menu-btn">Acessar Estatuto</a>
+    </div>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
+        }
+    </script>
+</body>
+</html>
