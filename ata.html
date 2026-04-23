@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ata de Reunião - HAZAQ</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            line-height: 1.6; 
+            padding: 20px; 
+            margin: 0; 
+            background-color: #ffffff; 
+            color: #333;
+        }
+        .ata-container {
+            max-width: 800px;
+            margin: auto;
+            border: 1px solid #ccc;
+            padding: 30px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #0056b3; padding-bottom: 10px; }
+        .logo { width: 80px; }
+        
+        .form-group { margin-bottom: 15px; }
+        label { font-weight: bold; color: #0056b3; }
+        
+        input[type="text"], input[type="date"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        /* Área de texto expansível para o secretário */
+        textarea {
+            min-height: 300px;
+            resize: vertical;
+            line-height: 1.8;
+            background-image: linear-gradient(#eee .1em, transparent .1em);
+            background-size: 100% 1.8em;
+        }
+
+        .row { display: flex; gap: 20px; flex-wrap: wrap; }
+        .col { flex: 1; min-width: 200px; }
+
+        .btn-print {
+            background-color: #007bff;
+            color: white;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            font-size: 1.1rem;
+        }
+        .btn-print:hover { background-color: #0056b3; }
+
+        @media print {
+            .btn-print, .nav-buttons { display: none; }
+            body { padding: 0; }
+            .ata-container { border: none; box-shadow: none; width: 100%; max-width: 100%; }
+            textarea { border: none; background: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="ata-container">
+    <header>
+        <img src="logo-192.png" alt="Logo HAZAQ" class="logo">
+        <h1>ATA DE REUNIÃO - HAZAQ</h1>
+        <div class="row">
+            <div class="col">
+                <label>Número da Ata:</label>
+                <input type="text" value="001/2026" placeholder="000/0000">
+            </div>
+            <div class="col">
+                <label>Natureza:</label>
+                <select>
+                    <option value="ordinaria">Reunião Ordinária</option>
+                    <option value="extraordinaria">Reunião Extraordinária</option>
+                </select>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="form-group">
+            <label>Data:</label>
+            <input type="date">
+        </div>
+
+        <div class="form-group">
+            <label>Local/Endereço da Reunião:</label>
+            <input type="text" placeholder="Ex: Sede Itanhangá - MT ou Endereço completo">
+        </div>
+
+        <div class="form-group">
+            <label>Membros e Visitantes Presentes:</label>
+            <input type="text" placeholder="Nome dos presentes separados por vírgula">
+        </div>
+
+        <div class="form-group">
+            <label>Responsável pela Abertura e Oração:</label>
+            <input type="text" placeholder="Nome de quem abriu a reunião">
+        </div>
+
+        <div class="form-group">
+            <label>Leitura da Palavra por:</label>
+            <input type="text" placeholder="Nome de quem leu as Escrituras">
+        </div>
+
+        <div class="form-group">
+            <label>Pauta e Desenvolvimento (Registro do Secretário):</label>
+            <textarea placeholder="Descreva aqui os temas abordados, falas e decisões tomadas..."></textarea>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label>Presidente/Diretor:</label>
+                <input type="text" placeholder="Assinatura Digital/Nome">
+            </div>
+            <div class="col">
+                <label>Secretário(a):</label>
+                <input type="text" placeholder="Assinatura Digital/Nome">
+            </div>
+        </div>
+    </main>
+
+    <button class="btn-print" onclick="window.print()">Finalizar e Imprimir / Gerar PDF</button>
+</div>
+
+<div style="text-align: center; margin-top: 20px;" class="nav-buttons">
+    <a href="index.html" style="text-decoration: none; color: #666;">[ Voltar ao Menu Principal ]</a>
+</div>
+
+</body>
+</html>
