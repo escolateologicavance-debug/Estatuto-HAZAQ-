@@ -34,22 +34,29 @@
             border-radius: 4px;
             font-size: 1rem;
             box-sizing: border-box;
+            font-family: inherit;
         }
 
-        /* Área de texto expansível para o secretário */
+        /* Área para impressão que substituirá o textarea */
+        #print-content {
+            display: none;
+            white-space: pre-wrap; /* Mantém as quebras de linha */
+            word-wrap: break-word;
+            min-height: 100px;
+            border: 1px solid #eee;
+            padding: 10px;
+        }
+
         textarea {
             min-height: 300px;
             resize: vertical;
-            line-height: 1.8;
-            background-image: linear-gradient(#eee .1em, transparent .1em);
-            background-size: 100% 1.8em;
         }
 
         .row { display: flex; gap: 20px; flex-wrap: wrap; }
         .col { flex: 1; min-width: 200px; }
 
         .btn-print {
-            background-color: #007bff;
+            background-color: #28a745;
             color: white;
             padding: 15px 25px;
             border: none;
@@ -60,13 +67,22 @@
             margin-top: 20px;
             font-size: 1.1rem;
         }
-        .btn-print:hover { background-color: #0056b3; }
+
+        .slogan-footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #0056b3;
+            color: #0056b3;
+            display: none; /* Só aparece na impressão */
+        }
 
         @media print {
-            .btn-print, .nav-buttons { display: none; }
-            body { padding: 0; }
-            .ata-container { border: none; box-shadow: none; width: 100%; max-width: 100%; }
-            textarea { border: none; background: none; }
+            .btn-print, .nav-buttons, textarea { display: none !important; }
+            #print-content, .slogan-footer { display: block !important; }
+            body { padding: 0; background: white; }
+            .ata-container { border: none; box-shadow: none; width: 100%; max-width: 100%; padding: 0; }
+            input, select { border: none !important; background: transparent !important; appearance: none; -webkit-appearance: none; }
         }
     </style>
 </head>
@@ -79,7 +95,7 @@
         <div class="row">
             <div class="col">
                 <label>Número da Ata:</label>
-                <input type="text" value="001/2026" placeholder="000/0000">
+                <input type="text" value="001/2026">
             </div>
             <div class="col">
                 <label>Natureza:</label>
@@ -99,47 +115,64 @@
 
         <div class="form-group">
             <label>Local/Endereço da Reunião:</label>
-            <input type="text" placeholder="Ex: Sede Itanhangá - MT ou Endereço completo">
+            <input type="text" placeholder="Endereço completo">
         </div>
 
         <div class="form-group">
             <label>Membros e Visitantes Presentes:</label>
-            <input type="text" placeholder="Nome dos presentes separados por vírgula">
+            <input type="text" placeholder="Nomes dos presentes">
         </div>
 
         <div class="form-group">
             <label>Responsável pela Abertura e Oração:</label>
-            <input type="text" placeholder="Nome de quem abriu a reunião">
+            <input type="text" placeholder="Nome">
         </div>
 
         <div class="form-group">
             <label>Leitura da Palavra por:</label>
-            <input type="text" placeholder="Nome de quem leu as Escrituras">
+            <input type="text" placeholder="Nome">
         </div>
 
         <div class="form-group">
             <label>Pauta e Desenvolvimento (Registro do Secretário):</label>
-            <textarea placeholder="Descreva aqui os temas abordados, falas e decisões tomadas..."></textarea>
+            <textarea id="texto-ata" placeholder="Escreva aqui os detalhes da reunião..."></textarea>
+            <div id="print-content"></div>
         </div>
 
         <div class="row">
             <div class="col">
                 <label>Presidente/Diretor:</label>
-                <input type="text" placeholder="Assinatura Digital/Nome">
+                <input type="text">
             </div>
             <div class="col">
                 <label>Secretário(a):</label>
-                <input type="text" placeholder="Assinatura Digital/Nome">
+                <input type="text">
             </div>
         </div>
     </main>
 
-    <button class="btn-print" onclick="window.print()">Finalizar e Imprimir / Gerar PDF</button>
+    <button class="btn-print" onclick="prepararImpressao()">Finalizar e Imprimir / Gerar PDF</button>
+
+    <div class="slogan-footer">
+        <h3>HAZAQ</h3>
+        <p>"A Escolha dos Fortes!"</p>
+    </div>
 </div>
 
 <div style="text-align: center; margin-top: 20px;" class="nav-buttons">
     <a href="index.html" style="text-decoration: none; color: #666;">[ Voltar ao Menu Principal ]</a>
 </div>
+
+<script>
+    function prepararImpressao() {
+        // Pega o que foi digitado no textarea
+        var conteudo = document.getElementById('texto-ata').value;
+        // Coloca dentro da DIV de impressão
+        document.getElementById('print-content').innerText = conteudo;
+        // Chama a função de imprimir do navegador
+        window.print();
+    }
+</script>
 
 </body>
 </html>
