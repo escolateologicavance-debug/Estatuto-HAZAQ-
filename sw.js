@@ -10,9 +10,12 @@ const ASSETS = [
   './6.html',
   './7.html',
   './8.html',
+  './9.html'
   './manifest.json',
   './logo-192.png',
-  './logo-512.png'
+  './logo-512.png',
+  './logo-hazaq.png'
+
 ];
 
 // Instalação e Cache dos arquivos
