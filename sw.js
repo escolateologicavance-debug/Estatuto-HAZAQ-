@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hazaq-estatuto-v1';
+const CACHE_NAME = 'hazaq-estatuto-v2';
 const ASSETS = [
   './',
   './index.html',
