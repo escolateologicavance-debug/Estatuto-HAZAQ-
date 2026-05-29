@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tesouraria HAZAQ</title>
+<style>
+body{font-family:Segoe UI,Tahoma,sans-serif;background:#fff;padding:15px}
+.box{max-width:1000px;margin:auto;border:1px solid #ccc;padding:20px}
+h1{text-align:center;color:#0056b3}
+.logo{width:80px;display:block;margin:auto}
+label{font-weight:bold;color:#0056b3}
+input,select,textarea{width:100%;padding:10px;box-sizing:border-box;margin:5px 0 10px}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.col{flex:1;min-width:180px}
+button{padding:10px 14px;margin:3px;border:none;border-radius:4px;color:#fff;font-weight:bold}
+.g{background:#28a745}.b{background:#0056b3}.r{background:#dc3545}
+table{width:100%;border-collapse:collapse}
+.wrap{overflow-x:auto}
+th,td{border:1px solid #ddd;padding:8px}
+th{background:#0056b3;color:#fff}
+.cards{display:flex;gap:10px;flex-wrap:wrap}
+.card{flex:1;padding:12px;color:#fff;border-radius:5px;min-width:180px}
+.e{background:#28a745}.s{background:#dc3545}.t{background:#0056b3}
+@media print{button,.noprint{display:none}.box{border:none}}
+</style>
+</head>
+<body>
+<div class="box">
+<img src="logo-192.png" class="logo">
+<h1>TESOURARIA HAZAQ</h1>
+
+<div class="row">
+<div class="col">
+<label>Mês</label>
+<input id="mes" placeholder="Junho/2026">
+</div>
+<div class="col">
+<label>Saldo Inicial</label>
+<input type="number" id="saldoInicial" value="0" step="0.01" oninput="atualizar()">
+</div>
+</div>
+
+<div class="row">
+<div class="col"><label>Data</label><input type="date" id="data"></div>
+<div class="col"><label>Tipo</label>
+<select id="tipo">
+<option>Entrada</option>
+<option>Saída</option>
+</select></div>
+</div>
+
+<label>Categoria</label>
+<select id="categoria">
+<option>Dízimo</option>
+<option>Oferta</option>
+<option>Donativo</option>
+<option>Evento</option>
+<option>Alimentação</option>
+<option>Transporte</option>
+<option>Energia</option>
+<option>Água</option>
+<option>Internet</option>
+<option>Material</option>
+<option>Limpeza</option>
+<option>Missões</option>
+<option>Outros</option>
+</select>
+
+<label>Descrição</label>
+<textarea id="descricao"></textarea>
+
+<div class="row">
+<div class="col"><label>Valor</label><input type="number" id="valor" step="0.01"></div>
+<div class="col"><label>Responsável</label><input id="responsavel"></div>
+</div>
+
+<button class="g" onclick="adicionar()">Adicionar Movimento</button>
+
+<div class="cards">
+<div class="card e">Entradas<br>R$ <span id="ent">0.00</span></div>
+<div class="card s">Saídas<br>R$ <span id="sai">0.00</span></div>
+<div class="card t">Saldo<br>R$ <span id="sal">0.00</span></div>
+</div>
+
+<h3>Movimentos</h3>
+<div class="wrap">
+<table>
+<thead><tr><th>Data</th><th>Tipo</th><th>Categoria</th><th>Descrição</th><th>Valor</th><th>Resp.</th><th>X</th></tr></thead>
+<tbody id="tb"></tbody>
+</table>
+</div>
+
+<h3>Relatório / Balancete</h3>
+<textarea id="relatorio" rows="12"></textarea>
+
+<button class="b" onclick="gerar()">Gerar Balancete</button>
+<button class="b" onclick="zap()">WhatsApp</button>
+<button class="b" onclick="window.print()">PDF</button>
+<button class="g" onclick="fecharMes()">Fechar Mês</button>
+<button class="r" onclick="limpar()">Limpar Caixa</button>
+
+<div class="noprint" style="text-align:center;margin-top:20px">
+<a href="index.html">[ Voltar ao Menu Principal ]</a>
+</div>
+</div>
+
+<script>
+let mov=JSON.parse(localStorage.getItem('hazaq_mov')||'[]');
+let hist=JSON.parse(localStorage.getItem('hazaq_hist')||'[]');
+
+function salvar(){localStorage.setItem('hazaq_mov',JSON.stringify(mov));}
+
+function adicionar(){
+let tipo=document.getElementById('tipo').value;
+let d=document.getElementById('descricao').value.trim();
+if(tipo==='Saída' && d===''){alert('Descrição obrigatória para saída');return;}
+mov.push({
+data:data.value,
+tipo:tipo,
+categoria:categoria.value,
+descricao:d,
+valor:parseFloat(valor.value||0),
+responsavel:responsavel.value
+});
+salvar();atualizar();
+}
+
+function excluir(i){mov.splice(i,1);salvar();atualizar();}
+
+function atualizar(){
+let ent=0,sai=0;
+tb.innerHTML='';
+mov.forEach((m,i)=>{
+if(m.tipo==='Entrada')ent+=m.valor; else sai+=m.valor;
+tb.innerHTML+=`<tr>
+<td>${m.data}</td>
+<td>${m.tipo}</td>
+<td>${m.categoria}</td>
+<td>${m.descricao}</td>
+<td>R$ ${m.valor.toFixed(2)}</td>
+<td>${m.responsavel}</td>
+<td><button class="r" onclick="excluir(${i})">X</button></td>
+</tr>`;
+});
+let saldo=(parseFloat(saldoInicial.value||0)+ent-sai);
+entSpan=document.getElementById('ent'); entSpan.innerText=ent.toFixed(2);
+document.getElementById('sai').innerText=sai.toFixed(2);
+document.getElementById('sal').innerText=saldo.toFixed(2);
+}
+
+function gerar(){
+let txt='TESOURARIA HAZAQ\n\n';
+txt+='Mês: '+mes.value+'\n\n';
+txt+='MOVIMENTO DE CAIXA\n\n';
+mov.forEach(m=>{
+txt+=m.data+' | '+m.tipo+' | '+m.categoria+' | R$ '+m.valor.toFixed(2)+'\n';
+if(m.descricao) txt+='Descrição: '+m.descricao+'\n';
+txt+='\n';
+});
+txt+='Entradas: R$ '+ent.innerText+'\n';
+txt+='Saídas: R$ '+sai.innerText+'\n';
+txt+='Saldo: R$ '+sal.innerText+'\n';
+relatorio.value=txt;
+}
+
+function zap(){
+gerar();
+location.href='https://wa.me/5566984666186?text='+encodeURIComponent(relatorio.value);
+}
+
+function fecharMes(){
+gerar();
+hist.push({mes:mes.value,relatorio:relatorio.value});
+localStorage.setItem('hazaq_hist',JSON.stringify(hist));
+saldoInicial.value=sal.innerText;
+mov=[];
+salvar();
+atualizar();
+alert('Mês fechado e arquivado.');
+}
+
+function limpar(){
+if(confirm('Apagar todos os lançamentos?')){
+mov=[];salvar();atualizar();
+}
+}
+
+atualizar();
+</script>
+</body>
+</html>
